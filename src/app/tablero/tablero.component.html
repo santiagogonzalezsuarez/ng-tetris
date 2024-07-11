@@ -1,0 +1,55 @@
+<div class="tablero-container" [style.--tamano-cuadradito]="tamanoCuadradito + 'px'">
+    <div class="tablero-inner-container">
+        <div class="tablero">
+            <ng-container *ngFor="let row of getRows((Tablero$ | async) || []); index as r">
+                <ng-container *ngFor="let column of row; index as c">
+                    <div [class.linea]="column >= 8" [style.visibility]="column == 0 ? 'hidden' : 'visible'" [style.--hue]="colores[column % 8]" class="relief-square" [style.gridRow]="r + 1" [style.gridColumn]="c + 1"></div>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="pieza">
+                <ng-container *ngFor="let i of getIterArray(getPiezaSize(pieza[rotacion]))">
+                    <ng-container *ngFor="let j of getIterArray(getPiezaSize(pieza[rotacion]))">
+                        <ng-container *ngIf="i + piezaX >= 0 && i + piezaX < columnas">
+                            <ng-container *ngIf="j + piezaY >= 0 && j + piezaY < filas">
+                                <ng-container *ngIf="pieza[rotacion][j * getPiezaSize(pieza[rotacion]) + i] != 0">
+                                    <div [style.--hue]="colores[pieza[rotacion][j * getPiezaSize(pieza[rotacion]) + i]]" class="relief-square" [style.gridRow]="j + piezaY + 1" [style.gridColumn]="i + piezaX + 1"></div>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="gameover" *ngIf="gameOver">
+            GAME OVER
+        </div>
+        <div class="pause" *ngIf="pause && !gameOver">
+            PAUSE
+        </div>
+    </div>
+    <div class="retro-font padding-12">
+        <div>NEXT</div>
+        <div class="next-piece-container">
+            <div class="next-piece">
+                <ng-container *ngIf="piezaSiguiente">
+                    <ng-container *ngFor="let j of getIterArray(getPiezaSize(piezaSiguiente[0]))">
+                        <ng-container *ngFor="let i of getIterArray(getPiezaSize(piezaSiguiente[0]))">
+                            <ng-container *ngIf="piezaSiguiente[0][j * getPiezaSize(piezaSiguiente[0]) + i] != 0; else elseTpl">
+                                <div [style.--hue]="colores[piezaSiguiente[0][j * getPiezaSize(piezaSiguiente[0]) + i]]" class="relief-square" [style.gridRow]="j + 1" [style.gridColumn]="i + 1"></div>
+                            </ng-container>
+                            <ng-template #elseTpl>
+                                <div class="relief-square" [style.visibility]="'hidden'"></div>
+                            </ng-template>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="mt-5">LEVEL</div>
+        <div class="mt-3 digits">{{nivel}}</div>
+        <div class="mt-5">LINES</div>
+        <div class="mt-3 digits">{{lines}}</div>
+        <div class="mt-5">SCORE</div>
+        <div class="mt-3 digits">{{Puntuacion$ | async}}</div>
+    </div>
+</div>
