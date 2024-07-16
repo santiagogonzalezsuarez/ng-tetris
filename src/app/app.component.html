@@ -1,17 +1,22 @@
 <div class="full-screen">
-    <app-tablero #jugador1 [pause]="pause" [config-teclas]="{
-        'Izquierda': ['Keyboard', 'KeyA'],
-        'Derecha': ['Keyboard', 'KeyD'],
-        'Abajo': ['Keyboard', 'KeyS'],
-        'RotarCW': ['Keyboard', 'Period'],
-        'RotarCCW': ['Keyboard', 'Comma']
-    }" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(1, $event)" ></app-tablero>
-    <app-tablero #jugador2 [pause]="pause" [config-teclas]="{
-        'Izquierda': ['Keyboard', 'ArrowLeft'],
-        'Derecha': ['Keyboard', 'ArrowRight'],
-        'Abajo': ['Keyboard', 'ArrowDown'],
-        'RotarCW': ['Keyboard', 'ShiftRight'],
-        'RotarCCW': ['Keyboard', 'Numpad1']
-    }" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(2, $event)"></app-tablero>
+    <div>
+        <button type="button" (click)="reset()">RESET</button>
+    </div>
+    <div class="screen-division">
+        <app-tablero #jugador1 [pause]="pause" [config-teclas]="{
+            'Izquierda': ['Keyboard', 'KeyA'],
+            'Derecha': ['Keyboard', 'KeyD'],
+            'Abajo': ['Keyboard', 'KeyS'],
+            'RotarCW': ['Keyboard', 'Period'],
+            'RotarCCW': ['Keyboard', 'Comma']
+        }" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(1, $event)" ></app-tablero>
+        <app-tablero #jugador2 [pause]="pause" [config-teclas]="{
+            'Izquierda': ['Keyboard', 'ArrowLeft'],
+            'Derecha': ['Keyboard', 'ArrowRight'],
+            'Abajo': ['Keyboard', 'ArrowDown'],
+            'RotarCW': ['Keyboard', 'ShiftRight'],
+            'RotarCCW': ['Keyboard', 'Numpad1']
+        }" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(2, $event)"></app-tablero>
+    </div>
 </div>
 <router-outlet />

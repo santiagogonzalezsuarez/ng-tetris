@@ -224,7 +224,7 @@ export class TableroComponent {
 
     this.setRandomSeed()
     let tablero: number[] = []
-    for (let i = 0; i < this.filas; ++i) {
+    for (let j = 0; j < this.filas; ++j) {
       for (let i = 0; i < this.columnas; ++i) {
         tablero.push(0)
       }
@@ -239,6 +239,30 @@ export class TableroComponent {
     this.startToFallPiece()
 
     this.bindKeys()
+
+  }
+
+  public async reset(): Promise<void> {
+    this.setRandomSeed()
+    let tablero: number[] = []
+    for (let j = 0; j < this.filas; ++j) {
+      for (let i = 0; i < this.columnas; ++i) {
+        tablero.push(0)
+      }
+    }
+    this.Tablero$.next(tablero)
+    let pieceNumber = Math.floor(this.rnd!.random() * 7)
+    this.pieza = this.piezas[pieceNumber]
+    this.piezaY = pieceNumber == 0 ? -2 : pieceNumber == 3 ? 0 : -1
+    this.piezaSiguiente = this.piezas[Math.floor(this.rnd!.random() * 7)]
+    this.centerPiece
+    this.gameOver = false
+    this.numLineasAdd = 0
+    this.nivel = 0
+    this.lines = 0
+    this.Puntuacion$.next(0)
+
+    this.startToFallPiece()
 
   }
 
@@ -560,16 +584,13 @@ export class TableroComponent {
 
   public putear(numLineasAdd: number): void {
     this.numLineasAdd += numLineasAdd
-    console.log(`Total Add líneas: ${this.numLineasAdd}`)
   }
 
   // Añade líneas por la parte inferior del tablero con un hueco vacío para el modo contraoperativo.
   public async addLineasAleatoriasAbajo(numLineasAdd: number): Promise<void> {
     if (this.numLineasAdd < 1) return
-    console.log(`Putear: ${this.numLineasAdd}`)
     let tablero = await firstValueFrom(this.Tablero$)
     for (let j = numLineasAdd; j < this.filas; ++j) {
-      console.log(j)
       for (let i = 0; i < this.columnas; ++i) {
         tablero[(j - numLineasAdd) * this.columnas + i] = tablero[j * this.columnas + i]
       }
