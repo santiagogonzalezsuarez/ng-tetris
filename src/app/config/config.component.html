@@ -1,0 +1,43 @@
+<div>
+    <div class="title">
+        <div [style.flex]="1">Configuración</div>
+        <button class="btnClose" (click)="close.emit()">Cerrar</button>
+    </div>
+    <div class="rdo-jugadores">
+        <label><input (click)="setPlayers.emit(1)" [checked]="jugador2 == null" class="radio" type="radio" name="jugadores" />&nbsp;1 jugador</label>
+        <label><input (click)="setPlayers.emit(2)" [checked]="jugador2 != null" class="radio" type="radio" name="jugadores" />&nbsp;2 jugadores</label>
+    </div>
+    <div class="hbox">
+        <div class="player-config" *ngIf="jugador1 && jugador1.configTeclas">
+            <div class="subtitle">Jugador 1</div>
+            <div class="grid-config">
+                <div [style.gridRow]="1" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Izquierda', jugador1.configTeclas.Izquierda)">Izquierda</div>
+                <div [style.gridRow]="1" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Izquierda', jugador1.configTeclas.Izquierda)">{{getTecla(jugador1.configTeclas.Izquierda)}}</div>
+                <div [style.gridRow]="2" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Derecha', jugador1.configTeclas.Derecha)">Derecha</div>
+                <div [style.gridRow]="2" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Derecha', jugador1.configTeclas.Derecha)">{{getTecla(jugador1.configTeclas.Derecha)}}</div>
+                <div [style.gridRow]="3" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Abajo', jugador1.configTeclas.Abajo)">Bajar</div>
+                <div [style.gridRow]="3" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Abajo', jugador1.configTeclas.Abajo)">{{getTecla(jugador1.configTeclas.Abajo)}}</div>
+                <div [style.gridRow]="4" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Rotar 1', jugador1.configTeclas.RotarCW)">Rotar 1</div>
+                <div [style.gridRow]="4" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 1', jugador1.configTeclas.RotarCW)">{{getTecla(jugador1.configTeclas.RotarCW)}}</div>
+                <div [style.gridRow]="5" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Rotar 2', jugador1.configTeclas.RotarCCW)">Rotar 2</div>
+                <div [style.gridRow]="5" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 2', jugador1.configTeclas.RotarCCW)">{{getTecla(jugador1.configTeclas.RotarCCW)}}</div>
+            </div>
+        </div>
+        <div class="player-config" *ngIf="jugador2 && jugador2.configTeclas">
+            <div class="subtitle">Jugador 2</div>
+            <div class="grid-config">
+                <div [style.gridRow]="1" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Izquierda', jugador2.configTeclas.Izquierda)">Izquierda</div>
+                <div [style.gridRow]="1" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Izquierda', jugador2.configTeclas.Izquierda)">{{getTecla(jugador2.configTeclas.Izquierda)}}</div>
+                <div [style.gridRow]="2" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Derecha', jugador2.configTeclas.Derecha)">Derecha</div>
+                <div [style.gridRow]="2" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Derecha', jugador2.configTeclas.Derecha)">{{getTecla(jugador2.configTeclas.Derecha)}}</div>
+                <div [style.gridRow]="3" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Abajo', jugador2.configTeclas.Abajo)">Bajar</div>
+                <div [style.gridRow]="3" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Abajo', jugador2.configTeclas.Abajo)">{{getTecla(jugador2.configTeclas.Abajo)}}</div>
+                <div [style.gridRow]="4" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Rotar 1', jugador2.configTeclas.RotarCW)">Rotar 1</div>
+                <div [style.gridRow]="4" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 1', jugador2.configTeclas.RotarCW)">{{getTecla(jugador2.configTeclas.RotarCW)}}</div>
+                <div [style.gridRow]="5" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Rotar 2', jugador2.configTeclas.RotarCCW)">Rotar 2</div>
+                <div [style.gridRow]="5" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 2', jugador2.configTeclas.RotarCCW)">{{getTecla(jugador2.configTeclas.RotarCCW)}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-setkey #setKey *ngIf="showSetKey"></app-setkey>

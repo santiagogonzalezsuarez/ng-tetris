@@ -1,22 +1,12 @@
 <div class="full-screen">
-    <div>
+    <div class="top-buttons">
         <button type="button" (click)="reset()">RESET</button>
+        <button type="button" (click)="pause = true; showConfig()">CONFIG</button>
     </div>
     <div class="screen-division">
-        <app-tablero #jugador1 [pause]="pause" [config-teclas]="{
-            'Izquierda': ['Keyboard', 'KeyA'],
-            'Derecha': ['Keyboard', 'KeyD'],
-            'Abajo': ['Keyboard', 'KeyS'],
-            'RotarCW': ['Keyboard', 'Period'],
-            'RotarCCW': ['Keyboard', 'Comma']
-        }" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(1, $event)" ></app-tablero>
-        <app-tablero #jugador2 [pause]="pause" [config-teclas]="{
-            'Izquierda': ['Keyboard', 'ArrowLeft'],
-            'Derecha': ['Keyboard', 'ArrowRight'],
-            'Abajo': ['Keyboard', 'ArrowDown'],
-            'RotarCW': ['Keyboard', 'ShiftRight'],
-            'RotarCCW': ['Keyboard', 'Numpad1']
-        }" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(2, $event)"></app-tablero>
+        <app-tablero #jugador1 [pause]="pause" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(1, $event)" ></app-tablero>
+        <app-tablero #jugador2 *ngIf="((numJugadores | async) || 1) > 1" [pause]="pause" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(2, $event)"></app-tablero>
     </div>
+    <app-config #configScreen (set-players)="setPlayers($event)" *ngIf="config" (close)="config = false"></app-config>
 </div>
 <router-outlet />

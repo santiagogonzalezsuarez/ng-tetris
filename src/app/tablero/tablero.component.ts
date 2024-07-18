@@ -27,6 +27,7 @@ export class TableroComponent {
   public piezaX = 3
   public piezaY = -1
   private destroy$ = new Subject<void>()
+  private keyConfigDestroy$ = new Subject<void>()
   public rotacion: number = 0
   @Input("pause") public pause: boolean = false
   private PiezaColocada$ = new Subject<void>()
@@ -36,12 +37,12 @@ export class TableroComponent {
   private pushDownPoints: number = 0
   public nivel: number = 0
   public lines: number = 0
-  @Input("config-teclas") public configTeclas = {
-    "Izquierda": ["Keyboard", "a"],
-    "Derecha": ["Keyboard", "d"],
-    "Abajo": ["Keyboard", "s"],
-    "RotarCW": ["Keyboard", "."],
-    "RotarCCW": ["Keyboard", ","]
+  @Input("config-teclas") public configTeclas!: {
+    Izquierda: string[],
+    Derecha: string[],
+    Abajo: string[],
+    RotarCW: string[],
+    RotarCCW: string[]
   }
   @Input("random-seed") public rndSeed: number = 0
   private rnd?: randomSeed.RandomSeed
@@ -255,11 +256,12 @@ export class TableroComponent {
     this.pieza = this.piezas[pieceNumber]
     this.piezaY = pieceNumber == 0 ? -2 : pieceNumber == 3 ? 0 : -1
     this.piezaSiguiente = this.piezas[Math.floor(this.rnd!.random() * 7)]
-    this.centerPiece
+    this.centerPiece()
     this.gameOver = false
     this.numLineasAdd = 0
     this.nivel = 0
     this.lines = 0
+    this.rotacion = 0
     this.Puntuacion$.next(0)
 
     this.startToFallPiece()
@@ -267,14 +269,16 @@ export class TableroComponent {
   }
 
   private bindKeys(): void {
+    if (!this.configTeclas) return
 
     let leftPushed = false
     let rightPushed = false
     let downPushed = false
 
     // Izquierda
-    this.controls.getControlPressObservable(this.configTeclas["Izquierda"]).pipe(
+    if(this.configTeclas["Izquierda"]) this.controls.getControlPressObservable(this.configTeclas["Izquierda"]).pipe(
       takeUntil(this.destroy$),
+      takeUntil(this.keyConfigDestroy$),
       filter(() => !this.pause),
       filter(() => !this.gameOver)
     ).subscribe(() => {
@@ -288,7 +292,8 @@ export class TableroComponent {
         this.moveLeft()
       })
       this.controls.getControlReleaseObservable(this.configTeclas["Izquierda"]).pipe(
-        takeUntil(keyDestroy$)
+        takeUntil(keyDestroy$),
+        takeUntil(this.keyConfigDestroy$)
       ).subscribe(() => {
         leftPushed = false
         keyDestroy$.next()
@@ -296,8 +301,9 @@ export class TableroComponent {
     })
 
     // Derecha
-    this.controls.getControlPressObservable(this.configTeclas["Derecha"]).pipe(
+    if (this.configTeclas["Derecha"]) this.controls.getControlPressObservable(this.configTeclas["Derecha"]).pipe(
       takeUntil(this.destroy$),
+      takeUntil(this.keyConfigDestroy$),
       filter(() => !this.pause),
       filter(() => !this.gameOver)
     ).subscribe(() => {
@@ -311,7 +317,8 @@ export class TableroComponent {
         this.moveRight()
       })
       this.controls.getControlReleaseObservable(this.configTeclas["Derecha"]).pipe(
-        takeUntil(keyDestroy$)
+        takeUntil(keyDestroy$),
+        takeUntil(this.keyConfigDestroy$)
       ).subscribe(() => {
         rightPushed = false
         keyDestroy$.next()
@@ -319,8 +326,9 @@ export class TableroComponent {
     })
 
     // Abajo
-    this.controls.getControlPressObservable(this.configTeclas["Abajo"]).pipe(
+    if(this.configTeclas["Abajo"]) this.controls.getControlPressObservable(this.configTeclas["Abajo"]).pipe(
       takeUntil(this.destroy$),
+      takeUntil(this.keyConfigDestroy$),
       filter(() => !this.pause),
       filter(() => !this.gameOver)
     ).subscribe(() => {
@@ -330,6 +338,7 @@ export class TableroComponent {
       interval(50).pipe(
         startWith(0),
         takeUntil(keyDestroy$),
+        takeUntil(this.keyConfigDestroy$),
         takeUntil(this.PiezaColocada$)
       ).subscribe((c) => {
         this.pushDownPoints++
@@ -345,8 +354,9 @@ export class TableroComponent {
     })
 
     // Rotación (en sentido de las agujas del reloj)
-    this.controls.getControlPressObservable(this.configTeclas["RotarCW"]).pipe(
+    if (this.configTeclas["RotarCW"]) this.controls.getControlPressObservable(this.configTeclas["RotarCW"]).pipe(
       takeUntil(this.destroy$),
+      takeUntil(this.keyConfigDestroy$),
       filter(() => !this.pause),
       filter(() => !this.gameOver)
     ).subscribe(() => {
@@ -354,8 +364,9 @@ export class TableroComponent {
     })
 
     // Rotación (en sentido contrario de las agujas del reloj)
-    this.controls.getControlPressObservable(this.configTeclas["RotarCCW"]).pipe(
+    if (this.configTeclas["RotarCCW"]) this.controls.getControlPressObservable(this.configTeclas["RotarCCW"]).pipe(
       takeUntil(this.destroy$),
+      takeUntil(this.keyConfigDestroy$),
       filter(() => !this.pause),
       filter(() => !this.gameOver)
     ).subscribe(() => {
@@ -606,6 +617,15 @@ export class TableroComponent {
       }
     }
     this.Tablero$.next(tablero)
+  }
+
+  //#endregion
+
+  //#region Resetear configuración de teclas
+
+  public keySettingsReset(): void {
+    this.keyConfigDestroy$.next()
+    this.bindKeys()
   }
 
   //#endregion
