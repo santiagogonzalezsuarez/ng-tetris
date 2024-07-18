@@ -21,6 +21,8 @@
                 <div [style.gridRow]="4" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 1', jugador1.configTeclas.RotarCW)">{{getTecla(jugador1.configTeclas.RotarCW)}}</div>
                 <div [style.gridRow]="5" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Rotar 2', jugador1.configTeclas.RotarCCW)">Rotar 2</div>
                 <div [style.gridRow]="5" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 2', jugador1.configTeclas.RotarCCW)">{{getTecla(jugador1.configTeclas.RotarCCW)}}</div>
+                <div [style.gridRow]="6" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Pause', jugador1.configTeclas.Pause)">Pausa</div>
+                <div [style.gridRow]="6" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Pause', jugador1.configTeclas.Pause)">{{getTecla(jugador1.configTeclas.Pause)}}</div>
             </div>
         </div>
         <div class="player-config" *ngIf="jugador2 && jugador2.configTeclas">
@@ -36,6 +38,8 @@
                 <div [style.gridRow]="4" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 1', jugador2.configTeclas.RotarCW)">{{getTecla(jugador2.configTeclas.RotarCW)}}</div>
                 <div [style.gridRow]="5" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Rotar 2', jugador2.configTeclas.RotarCCW)">Rotar 2</div>
                 <div [style.gridRow]="5" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Rotar 2', jugador2.configTeclas.RotarCCW)">{{getTecla(jugador2.configTeclas.RotarCCW)}}</div>
+                <div [style.gridRow]="6" [style.gridColumn]="1" class="btnTecla" (click)="setTecla('Pause', jugador2.configTeclas.Pause)">Pausa</div>
+                <div [style.gridRow]="6" [style.gridColumn]="2" class="btnTecla" (click)="setTecla('Pause', jugador2.configTeclas.Pause)">{{getTecla(jugador2.configTeclas.Pause)}}</div>
             </div>
         </div>
     </div>

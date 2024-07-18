@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { TableroComponent } from '../tablero/tablero.component';
 import { SetkeyComponent } from '../setkey/setkey.component';
 import { CommonModule } from '@angular/common';
-import { firstValueFrom, timer } from 'rxjs';
+import { firstValueFrom, Subject, timer } from 'rxjs';
 
 @Component({
   selector: 'app-config',
@@ -21,10 +21,14 @@ export class ConfigComponent {
   @Output("close") public close = new EventEmitter<void>()
   @ViewChild("setKey") public setKey!: SetkeyComponent
   @Output("set-players") public setPlayers = new EventEmitter<number>()
+  @Input("bindPauseSubject") public bindPauseSubject?: Subject<void>
 
   public getTecla(tecla: string[]): string {
     if (tecla == null || !Array.isArray(tecla)) return ''
     if (tecla[0] == 'Keyboard') {
+      return tecla[1]
+    }
+    if (tecla[0] == 'Controller') {
       return tecla[1]
     }
     return ''
@@ -47,6 +51,7 @@ export class ConfigComponent {
       this.jugador2.keySettingsReset()
       localStorage.setItem('configTeclas2', JSON.stringify(this.jugador2.configTeclas))
     }
+    if (this.bindPauseSubject) this.bindPauseSubject.next()
   }
 
 }

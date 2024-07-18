@@ -4,6 +4,7 @@ import { TableroComponent } from './tablero/tablero.component';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, filter, firstValueFrom, fromEvent, Subject, takeUntil, timer } from 'rxjs';
 import { ConfigComponent } from './config/config.component';
+import { ControlsService } from './services/controls.service';
 
 @Component({
   selector: 'app-root',
@@ -29,28 +30,55 @@ export class AppComponent {
   @ViewChild("configScreen") public configScreen!: ConfigComponent
   public config: boolean = false
   public numJugadores!: BehaviorSubject<number>
+  public keysDestroy$ = new Subject<void>()
+  public bindPauseSubject = new Subject<void>()
   
   //#endregion
 
   //#region Constructor
 
   constructor(
-    private zone: NgZone
+    private controls: ControlsService
   ) {
-    fromEvent(document, 'keydown').pipe(
-      takeUntil(this.destory$),
-      filter(p => (p as KeyboardEvent).key == 'p')
-    ).subscribe(p => {
-      if (!this.config) {
-        this.pause = !this.pause
-      }
-    })
     this.randomSeed = Math.random() * 1000000
     let numPlayers = 1
     try {
       numPlayers = JSON.parse(localStorage.getItem('numPlayers') as string)
     } catch (ex) {}
     this.numJugadores = new BehaviorSubject<number>(numPlayers)
+    this.bindPauseSubject.pipe(
+      takeUntil(this.destory$)
+    ).subscribe(() => {
+      this.bindPause()
+    })
+  }
+
+  //#endregion
+
+  //#region Pausa
+
+  public bindPause(): void {
+    this.keysDestroy$.next()
+    if (this.jugador1) {
+      this.controls.getControlPressObservable(this.jugador1.configTeclas["Pause"]).pipe(
+        takeUntil(this.destory$),
+        takeUntil(this.keysDestroy$)
+      ).subscribe(() => {
+        if (!this.config) {
+          this.pause = !this.pause
+        }
+      })
+    }
+    if (this.jugador2) {
+      this.controls.getControlPressObservable(this.jugador2.configTeclas["Pause"]).pipe(
+        takeUntil(this.destory$),
+        takeUntil(this.keysDestroy$)
+      ).subscribe(() => {
+        if (!this.config) {
+          this.pause = !this.pause
+        }
+      })
+    }
   }
 
   //#endregion
@@ -74,6 +102,7 @@ export class AppComponent {
         "Abajo": ["Keyboard", "KeyS"],
         "RotarCW": ["Keyboard", "Period"],
         "RotarCCW": ["Keyboard", "Comma"],
+        "Pause": ["Keyboard", "KeyP"]
       }
       this.jugador1?.keySettingsReset()
     }
@@ -84,9 +113,11 @@ export class AppComponent {
         "Abajo": ["Keyboard", "ArrowDown"],
         "RotarCW": ["Keyboard", "ShiftRight"],
         "RotarCCW": ["Keyboard", "Slash"],
+        "Pause": ["Keyboard", "Enter"]
       }
       this.jugador2?.keySettingsReset()
     }
+    this.bindPauseSubject.next()
   }
 
   //#endregion
@@ -106,8 +137,8 @@ export class AppComponent {
     let numLineasAdd = 0
     if (lineas == 3) numLineasAdd = 1
     if (lineas == 4) numLineasAdd = 2
-    if (jugador == 1) this.jugador2.putear(numLineasAdd)
-    if (jugador == 2) this.jugador1.putear(numLineasAdd)
+    if (jugador == 1) this.jugador2?.putear(numLineasAdd)
+    if (jugador == 2) this.jugador1?.putear(numLineasAdd)
   }
 
   //#endregion

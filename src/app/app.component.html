@@ -7,6 +7,6 @@
         <app-tablero #jugador1 [pause]="pause" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(1, $event)" ></app-tablero>
         <app-tablero #jugador2 *ngIf="((numJugadores | async) || 1) > 1" [pause]="pause" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(2, $event)"></app-tablero>
     </div>
-    <app-config #configScreen (set-players)="setPlayers($event)" *ngIf="config" (close)="config = false"></app-config>
+    <app-config #configScreen (set-players)="setPlayers($event)" *ngIf="config" (close)="config = false" [bindPauseSubject]="bindPauseSubject"></app-config>
 </div>
 <router-outlet />

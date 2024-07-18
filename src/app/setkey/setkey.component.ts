@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { fromEvent, map, Observable, race } from 'rxjs';
+import { GamepadService } from '../services/gamepad.service';
 
 @Component({
   selector: 'app-setkey',
@@ -9,7 +10,22 @@ import { fromEvent, map, Observable, race } from 'rxjs';
   styleUrl: './setkey.component.scss'
 })
 export class SetkeyComponent {
+
+  //#region Propiedades
+
   public nombreTecla: string = ''
+
+  //#endregion
+
+  //#region Constructor
+
+  constructor(
+    private gamepad: GamepadService
+  ) { }
+
+  //#endregion
+
+  //#region Observable
 
   public getControlObservable(): Observable<string[]> {
     let keyboardObservable = fromEvent(document, 'keydown').pipe(
@@ -17,6 +33,14 @@ export class SetkeyComponent {
         return ['Keyboard', (p as KeyboardEvent).code]
       })
     )
-    return race(keyboardObservable)
+    let gamepadObservable = this.gamepad.getControlPressedObservable().pipe(
+      map(p => {
+        return ['Controller', p]
+      })
+    )
+    return race(keyboardObservable, gamepadObservable)
   }
+
+  //#endregion
+
 }

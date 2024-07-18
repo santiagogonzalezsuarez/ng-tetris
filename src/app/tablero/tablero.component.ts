@@ -42,7 +42,8 @@ export class TableroComponent {
     Derecha: string[],
     Abajo: string[],
     RotarCW: string[],
-    RotarCCW: string[]
+    RotarCCW: string[],
+    Pause: string[]
   }
   @Input("random-seed") public rndSeed: number = 0
   private rnd?: randomSeed.RandomSeed
