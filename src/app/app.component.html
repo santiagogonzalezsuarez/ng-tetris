@@ -1,7 +1,7 @@
 <div class="full-screen">
     <div class="top-buttons">
-        <button type="button" (click)="reset()">RESET</button>
-        <button type="button" (click)="pause = true; showConfig()">CONFIG</button>
+        <button type="button" (click)="reset()">{{ 'App.Reset' | translate }}</button>
+        <button type="button" (click)="pause = true; showConfig()">{{ 'App.Config' | translate }}</button>
     </div>
     <div class="screen-division">
         <app-tablero #jugador1 [pause]="pause" [random-seed]="randomSeed" (hacer-lineas)="hacerLineas(1, $event)" ></app-tablero>

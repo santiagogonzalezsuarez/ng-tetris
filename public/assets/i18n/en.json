@@ -1,0 +1,39 @@
+{
+    "App": {
+        "Reset": "RESET",
+        "Config": "SETTINGS"
+    },
+    "Config": {
+        "Settings": "Settings",
+        "Language": "Language",
+        "Players1": "1 Player",
+        "Players2": "2 Players",
+        "Player1": "Player 1",
+        "Player2": "Player 2",
+        "Left": "Left",
+        "Right": "Right",
+        "Down": "Down",
+        "RotateCW": "Rotate ↻",
+        "RotateCCW": "Rotate ↺",
+        "Pause": "Pause"
+    },
+    "General": {
+        "Close": "Close"
+    },
+    "Language": {
+        "English": "English",
+        "Spanish": "Español"
+    },
+    "Tablero": {
+        "GameOver": "GAME OVER",
+        "Pause": "PAUSE",
+        "Next": "NEXT",
+        "Level": "LEVEL",
+        "Lines": "LINES",
+        "Score": "SCORE",
+        "Tetris": "TETRIS",
+        "Triple": "TRIPLE",
+        "Double": "DOUBLE",
+        "Single": "SINGLE"
+    }
+}

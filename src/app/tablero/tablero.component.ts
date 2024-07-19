@@ -3,12 +3,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BehaviorSubject, filter, firstValueFrom, fromEvent, interval, startWith, Subject, takeUntil, timer } from 'rxjs';
 import { ControlsService } from '../services/controls.service';
 import * as randomSeed from 'random-seed'
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tablero',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   templateUrl: './tablero.component.html',
   styleUrl: './tablero.component.scss'
@@ -48,6 +50,10 @@ export class TableroComponent {
   @Input("random-seed") public rndSeed: number = 0
   private rnd?: randomSeed.RandomSeed
   @Output("hacer-lineas") public hacerLinea = new EventEmitter<number>()
+  public tetrises: number = 0
+  public triples: number = 0
+  public doubles: number = 0
+  public singles: number = 0
 
   // La velocidad de cada nivel la copio del Tetris original de la NES, las unidades son el número de Frames que tardan
   // en bajar las piezas en una pantalla NSTC (60fps)
@@ -262,6 +268,10 @@ export class TableroComponent {
     this.numLineasAdd = 0
     this.nivel = 0
     this.lines = 0
+    this.tetrises = 0
+    this.triples = 0
+    this.doubles = 0
+    this.singles = 0
     this.rotacion = 0
     this.Puntuacion$.next(0)
 
@@ -476,6 +486,20 @@ export class TableroComponent {
       }
 
       this.lines += numLineas
+      switch (numLineas) {
+        case 4:
+          this.tetrises++
+          break
+        case 3:
+          this.triples++
+          break
+        case 2:
+          this.doubles++
+          break
+        case 1:
+          this.singles++
+          break
+      }
       this.hacerLinea.emit(numLineas)
       let nivelPorLineas = Math.floor(this.lines / 10)
       if (nivelPorLineas > this.nivel) {

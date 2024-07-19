@@ -3,25 +3,41 @@ import { TableroComponent } from '../tablero/tablero.component';
 import { SetkeyComponent } from '../setkey/setkey.component';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom, Subject, timer } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-config',
   standalone: true,
   imports: [
     SetkeyComponent,
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.scss'
 })
 export class ConfigComponent {
   
+  //#region Propiedades
+
   @Input("jugador1") public jugador1!: TableroComponent
   @Input("jugador2") public jugador2!: TableroComponent
   @Output("close") public close = new EventEmitter<void>()
   @ViewChild("setKey") public setKey!: SetkeyComponent
   @Output("set-players") public setPlayers = new EventEmitter<number>()
   @Input("bindPauseSubject") public bindPauseSubject?: Subject<void>
+
+  //#endregion
+
+  //#region Constructor
+
+  constructor(
+    public translate: TranslateService
+  ) {}
+
+  //#endregion
+
+  //#region Opciones
 
   public getTecla(tecla: string[]): string {
     if (tecla == null || !Array.isArray(tecla)) return ''
@@ -53,5 +69,16 @@ export class ConfigComponent {
     }
     if (this.bindPauseSubject) this.bindPauseSubject.next()
   }
+
+  //#endregion
+
+  //#region Idioma
+
+  public setLanguage(language: string) {
+    localStorage.setItem('language', language)
+    this.translate.setDefaultLang(language)
+  }
+
+  //#endregion
 
 }

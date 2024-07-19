@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BehaviorSubject, filter, firstValueFrom, fromEvent, Subject, takeUntil, timer } from 'rxjs';
 import { ConfigComponent } from './config/config.component';
 import { ControlsService } from './services/controls.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ import { ControlsService } from './services/controls.service';
     RouterOutlet,
     TableroComponent,
     CommonModule,
-    ConfigComponent
+    ConfigComponent,
+    TranslateModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -38,7 +40,8 @@ export class AppComponent {
   //#region Constructor
 
   constructor(
-    private controls: ControlsService
+    private controls: ControlsService,
+    private translate: TranslateService
   ) {
     this.randomSeed = Math.random() * 1000000
     let numPlayers = 1
@@ -84,6 +87,26 @@ export class AppComponent {
   //#endregion
 
   //#region Init
+
+  public getLanguage(langString: string): string {
+    let language: string
+    if (langString.indexOf('-') != -1) {
+      language = langString.split('-')[0]
+    } else {
+      language = langString.toLowerCase()
+    }    
+    switch (language.toLowerCase()) {
+      case 'es':
+        return 'es'
+      default:
+        return 'en'
+    }
+  }
+
+  public ngOnInit(): void {
+    let language = localStorage.getItem('language') || this.getLanguage(navigator.language)
+    this.translate.setDefaultLang(language);
+  }
 
   public async ngAfterViewInit(): Promise<void> {
     await this.loadConfig()

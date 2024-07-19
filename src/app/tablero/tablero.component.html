@@ -21,14 +21,14 @@
             </ng-container>
         </div>
         <div class="gameover" *ngIf="gameOver">
-            GAME OVER
+            {{ 'Tablero.GameOver' | translate }}
         </div>
         <div class="pause" *ngIf="pause && !gameOver">
-            PAUSE
+            {{ 'Tablero.Pause' | translate }}
         </div>
     </div>
     <div class="retro-font padding-12">
-        <div>NEXT</div>
+        <div>{{ 'Tablero.Next' | translate }}</div>
         <div class="next-piece-container">
             <div class="next-piece">
                 <ng-container *ngIf="piezaSiguiente">
@@ -45,11 +45,19 @@
                 </ng-container>
             </div>
         </div>
-        <div class="mt-5">LEVEL</div>
+        <div class="mt-5">{{ 'Tablero.Level' | translate }}</div>
         <div class="mt-3 digits">{{nivel}}</div>
-        <div class="mt-5">LINES</div>
+        <div class="mt-5">{{ 'Tablero.Lines' | translate }}</div>
         <div class="mt-3 digits">{{lines}}</div>
-        <div class="mt-5">SCORE</div>
+        <div class="mt-5">{{ 'Tablero.Score' | translate }}</div>
         <div class="mt-3 digits">{{Puntuacion$ | async}}</div>
+        <div class="mt-25">{{ 'Tablero.Tetris' | translate }}</div>
+        <div class="mt-3 digits">{{tetrises}}</div>
+        <div class="mt-5">{{ 'Tablero.Triple' | translate }}</div>
+        <div class="mt-3 digits">{{triples}}</div>
+        <div class="mt-5">{{ 'Tablero.Double' | translate }}</div>
+        <div class="mt-3 digits">{{doubles}}</div>
+        <div class="mt-5">{{ 'Tablero.Single' | translate }}</div>
+        <div class="mt-3 digits">{{singles}}</div>
     </div>
 </div>
